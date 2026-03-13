@@ -3,7 +3,9 @@ from . import views
 
 urlpatterns = [
     #مسارات الفاتورة المبيعات
+    path('list/sales/', views.sales_invoice_list, name='invoice_list'),
     path('list/sales/', views.sales_invoice_list, name='sales_invoice_list'),
+    path('create/sales/', views.create_sales_invoice, name='create_invoice'),
     path('create/sales/', views.create_sales_invoice, name='create_sales_invoice'),
     path('sales/<int:invoice_id>/edit', views.update_sales_invoice, name='edit_sales_invoice'),
     path('delete/sales/<int:invoice_id>/', views.delete_sales_invoice, name='delete_sales_invoice'),

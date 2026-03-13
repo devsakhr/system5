@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     # لوحة التحكم
     path('', views.invoice_dashboard, name='dashboard'),
+    path('', views.invoice_dashboard, name='invoice_dashboard'),
     
     # إدارة الفواتير
  
