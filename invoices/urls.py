@@ -32,6 +32,8 @@ urlpatterns = [
     # مسار تعديل فاتورة المشتريات
     path('print-view/<int:invoice_id>/', views.invoice_print_view, name='invoice_print_view'),
   #  path('print/<int:invoice_id>/', views.print_invoice, name='print_invoice'),
+    path('invoice/<int:invoice_id>/qr-code/', views.generate_qr_code_view, name='generate_qr_code'),
+
     
     
     
@@ -55,11 +57,6 @@ urlpatterns = [
     path('payment-methods/ajax_delete/', views.ajax_delete_payment_method, name='ajax_delete_payment_method'),
 
 
-
- # ... مسارات أخرى
-    path('products/', views.manage_products, name='manage_products'),
-    path('ajax_create_or_update_product/', views.ajax_create_or_update_product, name='ajax_create_or_update_product'),
-    path('ajax_delete_product/', views.ajax_delete_product, name='ajax_delete_product'),
 
 
 
