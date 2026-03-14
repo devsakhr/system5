@@ -418,8 +418,18 @@
             </div>
           </div>
 
-          <!-- الصف الثالث: المدينة + الرمز البريدي -->
+          <!-- الصف الثالث: عنوان الحي + المدينة -->
           <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="{{ customer_form.district.id_for_label }}" class="form-label">
+                {{ customer_form.district.label }}
+              </label>
+              {{ customer_form.district }}
+              {% if customer_form.district.errors %}
+                <div class="invalid-feedback d-block">{{ customer_form.district.errors|striptags }}</div>
+              {% endif %}
+            </div>
+
             <div class="col-md-6">
               <label for="{{ customer_form.city.id_for_label }}" class="form-label">
                 {{ customer_form.city.label }}
@@ -429,7 +439,10 @@
                 <div class="invalid-feedback d-block">{{ customer_form.city.errors|striptags }}</div>
               {% endif %}
             </div>
+          </div>
 
+          <!-- الصف الرابع: الرمز البريدي + رقم المبنى -->
+          <div class="row mb-3">
             <div class="col-md-6">
               <label for="{{ customer_form.postal_code.id_for_label }}" class="form-label">
                 {{ customer_form.postal_code.label }}
@@ -439,10 +452,7 @@
                 <div class="invalid-feedback d-block">{{ customer_form.postal_code.errors|striptags }}</div>
               {% endif %}
             </div>
-          </div>
 
-          <!-- الصف الرابع: رقم المبنى + البلد -->
-          <div class="row mb-3">
             <div class="col-md-6">
               <label for="{{ customer_form.building_number.id_for_label }}" class="form-label">
                 {{ customer_form.building_number.label }}
@@ -452,7 +462,10 @@
                 <div class="invalid-feedback d-block">{{ customer_form.building_number.errors|striptags }}</div>
               {% endif %}
             </div>
+          </div>
 
+          <!-- الصف الخامس: البلد + الرقم الضريبي -->
+          <div class="row mb-3">
             <div class="col-md-6">
               <label for="{{ customer_form.country.id_for_label }}" class="form-label">
                 {{ customer_form.country.label }}
@@ -462,10 +475,7 @@
                 <div class="invalid-feedback d-block">{{ customer_form.country.errors|striptags }}</div>
               {% endif %}
             </div>
-          </div>
 
-          <!-- الصف الخامس: الرقم الضريبي + السجل التجاري -->
-          <div class="row mb-3">
             <div class="col-md-6">
               <label for="{{ customer_form.vat_number.id_for_label }}" class="form-label">
                 {{ customer_form.vat_number.label }}
@@ -475,8 +485,11 @@
                 <div class="invalid-feedback d-block">{{ customer_form.vat_number.errors|striptags }}</div>
               {% endif %}
             </div>
+          </div>
 
-            <div class="col-md-6">
+          <!-- الصف السادس: السجل التجاري -->
+          <div class="row mb-3">
+            <div class="col-md-12">
               <label for="{{ customer_form.cr_number.id_for_label }}" class="form-label">
                 {{ customer_form.cr_number.label }}
               </label>
@@ -487,7 +500,7 @@
             </div>
           </div>
 
-          <!-- الصف السادس: الملاحظات -->
+          <!-- الصف السابع: الملاحظات -->
           <div class="row mb-3">
             <div class="col-md-12">
               <label for="{{ customer_form.notes.id_for_label }}" class="form-label">
@@ -509,7 +522,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- Include Tom Select JS -->
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>

@@ -403,6 +403,80 @@ def customer_detail(request, customer_id):
     return render(request, 'customers/customer_detail.html', context)
 
 
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.contrib import messages
+
+from .models import Branch, CompanySettings
+from .forms import BranchForm
+
+
+def branch_list(request):
+    branches = Branch.objects.all().order_by('name')
+    form = BranchForm()
+
+    context = {
+        'branches': branches,
+        'form': form,
+        'title': 'الفروع',
+    }
+    return render(request, 'branches/branch_list.html', context)
+
+
+@require_POST
+def ajax_create_or_update_branch(request):
+    edit_id = request.POST.get('edit_id')
+
+    if edit_id:
+        branch = get_object_or_404(Branch, id=edit_id)
+        form = BranchForm(request.POST, instance=branch)
+    else:
+        form = BranchForm(request.POST)
+
+    if form.is_valid():
+        branch = form.save(commit=False)
+
+        if hasattr(branch, 'company') and not getattr(branch, 'company', None):
+            branch.company = CompanySettings.objects.first()
+
+        branch.save()
+
+        return JsonResponse({
+            'status': 'success',
+            'id': branch.id,
+            'name': branch.name,
+            'code': branch.code or '',
+            'phone': branch.phone or '',
+            'address': branch.address or '',
+            'city': branch.city or '',
+            'is_active': branch.is_active,
+            'status_text': 'نشط' if branch.is_active else 'غير نشط',
+        })
+
+    return JsonResponse({
+        'status': 'error',
+        'errors': form.errors,
+    }, status=400)
+
+
+@require_POST
+def ajax_delete_branch(request):
+    delete_id = request.POST.get('delete_id')
+
+    if not delete_id:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'لم يتم تحديد الفرع المطلوب حذفه.'
+        }, status=400)
+
+    branch = get_object_or_404(Branch, id=delete_id)
+    branch.delete()
+
+    return JsonResponse({
+        'status': 'success'
+    })
+
 
 
 

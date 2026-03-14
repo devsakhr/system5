@@ -161,6 +161,33 @@ class CompanySettings(models.Model):
         verbose_name_plural = "إعدادات المنشآت"
 
 
+class Branch(models.Model):
+    company = models.ForeignKey(
+        'CompanySettings',
+        on_delete=models.CASCADE,
+        related_name='branches',
+        null=True,
+        blank=True,
+        verbose_name="الشركة"
+    )
+    name = models.CharField(max_length=255, verbose_name="اسم الفرع")
+    code = models.CharField(max_length=50, null=True, blank=True, verbose_name="رمز الفرع")
+    phone = models.CharField(max_length=20, null=True, blank=True, verbose_name="رقم الجوال")
+    address = models.CharField(max_length=255, null=True, blank=True, verbose_name="العنوان")
+    city = models.CharField(max_length=100, null=True, blank=True, verbose_name="المدينة")
+    is_active = models.BooleanField(default=True, verbose_name="نشط")
+
+    class Meta:
+        verbose_name = "فرع"
+        verbose_name_plural = "الفروع"
+        ordering = ['name']
+
+    def __str__(self):
+        if self.code:
+            return f"{self.name} - {self.code}"
+        return self.name
+
+
 # ==============================================================================
 # 2) شجرة الحسابات (ChartOfAccount) مع MPTT
 # ==============================================================================
@@ -247,6 +274,8 @@ class Customer(models.Model):
     phone = models.CharField(max_length=20, null=True, blank=True, verbose_name="رقم الهاتف")
     email = models.EmailField(null=True, blank=True, verbose_name="البريد الإلكتروني")
     address_line = models.CharField(max_length=255, null=True, blank=True, verbose_name="عنوان الشارع")
+    district = models.CharField(max_length=100, null=True, blank=True, verbose_name="عنوان الحي")
+  
     city = models.CharField(max_length=100, null=True, blank=True, verbose_name="المدينة")
     postal_code = models.CharField(max_length=9, null=True, blank=True, verbose_name="الرمز البريدي")
     building_number = models.CharField(max_length=20, null=True, blank=True, verbose_name="رقم المبنى")
@@ -262,6 +291,8 @@ class Customer(models.Model):
     class Meta:
         verbose_name = "عميل"
         verbose_name_plural = "عملاء"
+
+
 
 
 # ==============================================================================
@@ -366,6 +397,13 @@ class Invoice(models.Model):
         null=True,
         blank=True,
         verbose_name="المورد"
+    )
+    branch = models.ForeignKey(
+        'Branch',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="الفرع"
     )
     original_invoice = models.ForeignKey(
         'self',

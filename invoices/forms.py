@@ -154,10 +154,11 @@ class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
         fields = [
-            'name', 
-            'phone', 
+            'name',
+            'phone',
             'email',
             'address_line',
+            'district',
             'city',
             'postal_code',
             'building_number',
@@ -168,25 +169,27 @@ class CustomerForm(forms.ModelForm):
         ]
         widgets = {
             'name': forms.TextInput(attrs={
-                'class': 'form-control', 
+                'class': 'form-control',
                 'placeholder': 'اسم العميل'
             }),
-           
             'phone': forms.TextInput(attrs={
-                'class': 'form-control', 
+                'class': 'form-control',
                 'placeholder': 'رقم الهاتف / الجوال'
             }),
             'email': forms.EmailInput(attrs={
-                'class': 'form-control', 
+                'class': 'form-control',
                 'placeholder': 'البريد الإلكتروني'
             }),
             'address_line': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': 'العنوان  '
+                'class': 'form-control',
+                'placeholder': 'العنوان'
             }),
-           
+            'district': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'عنوان الحي'
+            }),
             'city': forms.TextInput(attrs={
-                'class': 'form-control', 
+                'class': 'form-control',
                 'placeholder': 'المدينة'
             }),
             'postal_code': forms.TextInput(attrs={
@@ -198,30 +201,65 @@ class CustomerForm(forms.ModelForm):
                 'placeholder': 'رقم المبنى'
             }),
             'country': forms.TextInput(attrs={
-                'class': 'form-control', 
+                'class': 'form-control',
                 'placeholder': 'البلد'
             }),
             'vat_number': forms.TextInput(attrs={
-                'class': 'form-control', 
+                'class': 'form-control',
                 'placeholder': 'الرقم الضريبي (إن وجد)'
             }),
             'cr_number': forms.TextInput(attrs={
-                'class': 'form-control', 
+                'class': 'form-control',
                 'placeholder': 'رقم السجل التجاري (إن وجد)'
             }),
             'notes': forms.Textarea(attrs={
-                'class': 'form-control', 
+                'class': 'form-control',
                 'placeholder': 'ملاحظات إضافية',
                 'rows': 3
             }),
         }
 
 
+from django import forms
+from .models import Branch
 
-
-
-
-
+class BranchForm(forms.ModelForm):
+    class Meta:
+        model = Branch
+        fields = [
+            'name',
+            'code',
+            'phone',
+            'address',
+            'city',
+            'is_active',
+        ]
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'اسم الفرع'
+            }),
+            'code': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'رمز الفرع'
+            }),
+            'phone': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'رقم الجوال'
+            }),
+            'address': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'العنوان'
+            }),
+            'city': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'المدينة'
+            }),
+            'is_active': forms.CheckboxInput(attrs={
+                'class': 'form-check-input'
+            }),
+        }
+        
 
 class CompanySettingsForm(forms.ModelForm):
     class Meta:

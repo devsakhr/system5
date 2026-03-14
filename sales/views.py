@@ -142,29 +142,6 @@ def create_sales_invoice(request):
 
 
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-
-
-@csrf_exempt
-def add_customer(request):
-    if request.method == 'POST':
-        form = CustomerForm(request.POST)
-        if form.is_valid():
-            customer = form.save()
-            return JsonResponse({
-                'success': True,
-                'customer_id': customer.id,
-                'customer_name': customer.name
-            })
-        else:
-            return JsonResponse({
-                'success': False,
-                'errors': form.errors.as_json()
-            })
-    return JsonResponse({'success': False, 'errors': 'Invalid request method'})
-
-
 def update_sales_invoice(request, invoice_id):
     """
     دالة عرض لتحديث فاتورة مبيعات موجودة.
@@ -255,6 +232,29 @@ def update_sales_invoice(request, invoice_id):
     }
     return render(request, 'sales/edit_invoice.html', context)
 
+
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+
+@csrf_exempt
+def add_customer(request):
+    if request.method == 'POST':
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            customer = form.save()
+            return JsonResponse({
+                'success': True,
+                'customer_id': customer.id,
+                'customer_name': customer.name
+            })
+        else:
+            return JsonResponse({
+                'success': False,
+                'errors': form.errors.as_json()
+            })
+    return JsonResponse({'success': False, 'errors': 'Invalid request method'})
 
 
 

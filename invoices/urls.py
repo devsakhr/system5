@@ -49,6 +49,10 @@ urlpatterns = [
     path('customer/delete/<int:customer_id>/', views.delete_customer, name='delete_customer'),
     path('customer/list/', views.customer_list, name='customer_list'),
     path('customer/detail/<int:customer_id>/', views.customer_detail, name='customer_detail'),
+
+    path('branches/', views.branch_list, name='branch_list'),
+    path('branches/ajax/create-or-update/', views.ajax_create_or_update_branch, name='ajax_create_or_update_branch'),
+    path('branches/ajax/delete/', views.ajax_delete_branch, name='ajax_delete_branch'),
     
 
 

@@ -1,0 +1,302 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h2 class="mb-4 text-center">{{ title|default:"إدارة الفروع" }}</h2>
+
+  <div class="text-end mb-3">
+    <button class="btn btn-primary" id="btnAddNew">
+      <i class="fas fa-plus"></i> إضافة فرع جديد
+    </button>
+  </div>
+
+  <div class="card">
+    <h5 class="card-header">قائمة الفروع</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table table-striped" id="branchTable">
+        <thead>
+          <tr>
+            <th>اسم الفرع</th>
+            <th>رمز الفرع</th>
+            <th>رقم الجوال</th>
+            <th>العنوان</th>
+            <th>المدينة</th>
+            <th>الحالة</th>
+            <th style="width: 200px;">الإجراء</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          {% for branch in branches %}
+          <tr id="row-{{ branch.id }}">
+            <td class="td-name">{{ branch.name }}</td>
+            <td class="td-code">{{ branch.code|default:"-" }}</td>
+            <td class="td-phone">{{ branch.phone|default:"-" }}</td>
+            <td class="td-address">{{ branch.address|default:"-" }}</td>
+            <td class="td-city">{{ branch.city|default:"-" }}</td>
+            <td class="td-status">
+              {% if branch.is_active %}
+                <span class="badge bg-success">نشط</span>
+              {% else %}
+                <span class="badge bg-secondary">غير نشط</span>
+              {% endif %}
+            </td>
+            <td>
+              <button class="btn btn-sm btn-warning btnEdit" data-id="{{ branch.id }}">
+                تعديل
+              </button>
+              <button class="btn btn-sm btn-danger btnDelete" data-id="{{ branch.id }}">
+                حذف
+              </button>
+            </td>
+          </tr>
+          {% empty %}
+          <tr id="emptyRow">
+            <td colspan="7" class="text-center">لا توجد فروع</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="branchModal" tabindex="-1" aria-labelledby="branchModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="branchForm">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title" id="branchModalLabel">إضافة فرع جديد</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+        </div>
+
+        <div class="modal-body">
+          <input type="hidden" name="edit_id" id="editIdInput" value="">
+
+          <div class="mb-3">
+            <label for="id_name" class="form-label">اسم الفرع</label>
+            <input type="text" class="form-control" name="name" id="id_name">
+            <div class="text-danger small" id="err_name"></div>
+          </div>
+
+          <div class="mb-3">
+            <label for="id_code" class="form-label">رمز الفرع</label>
+            <input type="text" class="form-control" name="code" id="id_code">
+            <div class="text-danger small" id="err_code"></div>
+          </div>
+
+          <div class="mb-3">
+            <label for="id_phone" class="form-label">رقم الجوال</label>
+            <input type="text" class="form-control" name="phone" id="id_phone">
+            <div class="text-danger small" id="err_phone"></div>
+          </div>
+
+          <div class="mb-3">
+            <label for="id_address" class="form-label">العنوان</label>
+            <input type="text" class="form-control" name="address" id="id_address">
+            <div class="text-danger small" id="err_address"></div>
+          </div>
+
+          <div class="mb-3">
+            <label for="id_city" class="form-label">المدينة</label>
+            <input type="text" class="form-control" name="city" id="id_city">
+            <div class="text-danger small" id="err_city"></div>
+          </div>
+
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" name="is_active" id="id_is_active" checked>
+            <label class="form-check-label" for="id_is_active">
+              الفرع نشط
+            </label>
+            <div class="text-danger small" id="err_is_active"></div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+          <button type="submit" class="btn btn-primary" id="btnSave">حفظ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+const createOrUpdateURL = "{% url 'ajax_create_or_update_branch' %}";
+const deleteURL = "{% url 'ajax_delete_branch' %}";
+const csrfToken = "{{ csrf_token }}";
+
+const branchModal = new bootstrap.Modal(document.getElementById('branchModal'), {});
+
+function clearErrors() {
+  document.getElementById('err_name').innerText = '';
+  document.getElementById('err_code').innerText = '';
+  document.getElementById('err_phone').innerText = '';
+  document.getElementById('err_address').innerText = '';
+  document.getElementById('err_city').innerText = '';
+  document.getElementById('err_is_active').innerText = '';
+}
+
+function resetForm() {
+  document.getElementById('editIdInput').value = '';
+  document.getElementById('id_name').value = '';
+  document.getElementById('id_code').value = '';
+  document.getElementById('id_phone').value = '';
+  document.getElementById('id_address').value = '';
+  document.getElementById('id_city').value = '';
+  document.getElementById('id_is_active').checked = true;
+  clearErrors();
+}
+
+document.getElementById('btnAddNew').addEventListener('click', function() {
+  document.getElementById('branchModalLabel').innerText = 'إضافة فرع جديد';
+  resetForm();
+  branchModal.show();
+});
+
+function bindEditButtons() {
+  document.querySelectorAll('.btnEdit').forEach(function(btn) {
+    btn.onclick = function() {
+      const rowId = this.dataset.id;
+      const row = document.getElementById('row-' + rowId);
+
+      const name = row.querySelector('.td-name').innerText.trim();
+      const code = row.querySelector('.td-code').innerText.trim();
+      const phone = row.querySelector('.td-phone').innerText.trim();
+      const address = row.querySelector('.td-address').innerText.trim();
+      const city = row.querySelector('.td-city').innerText.trim();
+      const statusText = row.querySelector('.td-status').innerText.trim();
+
+      document.getElementById('branchModalLabel').innerText = 'تعديل بيانات الفرع';
+      document.getElementById('editIdInput').value = rowId;
+      document.getElementById('id_name').value = (name === '-' ? '' : name);
+      document.getElementById('id_code').value = (code === '-' ? '' : code);
+      document.getElementById('id_phone').value = (phone === '-' ? '' : phone);
+      document.getElementById('id_address').value = (address === '-' ? '' : address);
+      document.getElementById('id_city').value = (city === '-' ? '' : city);
+      document.getElementById('id_is_active').checked = (statusText.includes('نشط') && !statusText.includes('غير نشط'));
+
+      clearErrors();
+      branchModal.show();
+    };
+  });
+}
+
+function bindDeleteButtons() {
+  document.querySelectorAll('.btnDelete').forEach(function(btn) {
+    btn.onclick = function() {
+      if (!confirm('هل أنت متأكد من حذف الفرع؟')) return;
+
+      const deleteId = this.dataset.id;
+      const formData = new FormData();
+      formData.append('delete_id', deleteId);
+      formData.append('csrfmiddlewaretoken', csrfToken);
+
+      axios.post(deleteURL, formData)
+        .then(function(response) {
+          if (response.data.status === 'success') {
+            const row = document.getElementById('row-' + deleteId);
+            if (row) row.remove();
+
+            const tbody = document.querySelector('#branchTable tbody');
+            if (!tbody.querySelector('tr')) {
+              tbody.innerHTML = `
+                <tr id="emptyRow">
+                  <td colspan="7" class="text-center">لا توجد فروع</td>
+                </tr>
+              `;
+            }
+
+            alert('تم حذف الفرع بنجاح.');
+          } else {
+            alert('حدث خطأ أثناء الحذف.');
+          }
+        })
+        .catch(function(error) {
+          console.error(error);
+          alert('حدث خطأ أثناء الاتصال بالسيرفر.');
+        });
+    };
+  });
+}
+
+document.getElementById('branchForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  clearErrors();
+
+  const formData = new FormData(this);
+
+  axios.post(createOrUpdateURL, formData)
+    .then(function(response) {
+      const data = response.data;
+
+      if (data.status === 'success') {
+        const rowId = data.id;
+        const tbody = document.querySelector('#branchTable tbody');
+        const emptyRow = document.getElementById('emptyRow');
+        if (emptyRow) emptyRow.remove();
+
+        let existingRow = document.getElementById('row-' + rowId);
+
+        const statusBadge = data.is_active
+          ? '<span class="badge bg-success">نشط</span>'
+          : '<span class="badge bg-secondary">غير نشط</span>';
+
+        if (!existingRow) {
+          const newRow = document.createElement('tr');
+          newRow.id = 'row-' + rowId;
+          newRow.innerHTML = `
+            <td class="td-name">${data.name}</td>
+            <td class="td-code">${data.code || '-'}</td>
+            <td class="td-phone">${data.phone || '-'}</td>
+            <td class="td-address">${data.address || '-'}</td>
+            <td class="td-city">${data.city || '-'}</td>
+            <td class="td-status">${statusBadge}</td>
+            <td>
+              <button class="btn btn-sm btn-warning btnEdit" data-id="${rowId}">تعديل</button>
+              <button class="btn btn-sm btn-danger btnDelete" data-id="${rowId}">حذف</button>
+            </td>
+          `;
+          tbody.prepend(newRow);
+        } else {
+          existingRow.querySelector('.td-name').innerText = data.name;
+          existingRow.querySelector('.td-code').innerText = data.code || '-';
+          existingRow.querySelector('.td-phone').innerText = data.phone || '-';
+          existingRow.querySelector('.td-address').innerText = data.address || '-';
+          existingRow.querySelector('.td-city').innerText = data.city || '-';
+          existingRow.querySelector('.td-status').innerHTML = statusBadge;
+        }
+
+        branchModal.hide();
+        resetForm();
+        bindEditButtons();
+        bindDeleteButtons();
+        alert('تم حفظ بيانات الفرع بنجاح.');
+      }
+    })
+    .catch(function(error) {
+      if (error.response && error.response.data && error.response.data.errors) {
+        const errors = error.response.data.errors;
+
+        if (errors.name) document.getElementById('err_name').innerText = errors.name.join(' ');
+        if (errors.code) document.getElementById('err_code').innerText = errors.code.join(' ');
+        if (errors.phone) document.getElementById('err_phone').innerText = errors.phone.join(' ');
+        if (errors.address) document.getElementById('err_address').innerText = errors.address.join(' ');
+        if (errors.city) document.getElementById('err_city').innerText = errors.city.join(' ');
+        if (errors.is_active) document.getElementById('err_is_active').innerText = errors.is_active.join(' ');
+      } else {
+        console.error(error);
+        alert('حدث خطأ أثناء الاتصال بالسيرفر.');
+      }
+    });
+});
+
+bindEditButtons();
+bindDeleteButtons();
+</script>
+{% endblock %}

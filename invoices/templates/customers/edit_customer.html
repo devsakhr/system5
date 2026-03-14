@@ -3,7 +3,7 @@
 
 {% block extra_css %}
 <style>
-  /* تنسيق عام لصفحة تعديل بيانات المورد */
+  /* تنسيق عام لصفحة تعديل بيانات العميل */
   .supplier-form-container {
       max-width: 800px;
       margin: 20px auto;
@@ -26,7 +26,6 @@
       background-color: #007bff;
       color: #fff;
   }
-  /* استخدام شبكة Bootstrap لتقسيم الحقول على الشاشات الأكبر */
   .row .col-md-6 {
       margin-bottom: 15px;
   }
@@ -43,25 +42,28 @@
   <h4 class="fw-bold py-3 mb-4">
     <span class="text-muted fw-light">العملاء /</span> تعديل بيانات العميل
   </h4>
+
   <div class="row">
     <div class="col-xl">
       <div class="card mb-4">
-       
         <div class="card-body">
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            
-            <!-- اسم المورد -->
+
+            <!-- الصف الأول: اسم العميل + رقم الهاتف -->
             <div class="mb-3 row">
               <div class="form-group col-12 col-md-6">
-
                 <label class="form-label" for="{{ form.name.id_for_label }}">
-                  <i class="bx bx-building"></i> اسم العميل 
+                  <i class="bx bx-user"></i> اسم العميل
                 </label>
                 <div class="input-group input-group-merge">
                   {{ form.name }}
                 </div>
+                {% if form.name.errors %}
+                  <div class="invalid-feedback d-block">{{ form.name.errors|striptags }}</div>
+                {% endif %}
               </div>
+
               <div class="form-group col-12 col-md-6">
                 <label class="form-label" for="{{ form.phone.id_for_label }}">
                   <i class="bx bx-phone"></i> رقم الهاتف / الجوال
@@ -69,12 +71,13 @@
                 <div class="input-group input-group-merge">
                   {{ form.phone }}
                 </div>
+                {% if form.phone.errors %}
+                  <div class="invalid-feedback d-block">{{ form.phone.errors|striptags }}</div>
+                {% endif %}
               </div>
-
             </div>
 
-           
-
+            <!-- الصف الثاني: البريد الإلكتروني + عنوان الشارع -->
             <div class="mb-3 row">
               <div class="form-group col-12 col-md-6">
                 <label class="form-label" for="{{ form.email.id_for_label }}">
@@ -83,30 +86,36 @@
                 <div class="input-group input-group-merge">
                   {{ form.email }}
                 </div>
+                {% if form.email.errors %}
+                  <div class="invalid-feedback d-block">{{ form.email.errors|striptags }}</div>
+                {% endif %}
               </div>
+
               <div class="form-group col-12 col-md-6">
                 <label class="form-label" for="{{ form.address_line.id_for_label }}">
-                  <i class="bx bx-map"></i> العنوان  
+                  <i class="bx bx-map"></i> عنوان الشارع
                 </label>
                 <div class="input-group input-group-merge">
                   {{ form.address_line }}
                 </div>
+                {% if form.address_line.errors %}
+                  <div class="invalid-feedback d-block">{{ form.address_line.errors|striptags }}</div>
+                {% endif %}
               </div>
+            </div>
 
-            </div>            
-
-          
-          
-            <!-- المدينة والمنطقة -->
+            <!-- الصف الثالث: عنوان الحي + المدينة -->
             <div class="row mb-3">
-
               <div class="form-group col-12 col-md-6">
-                <label class="form-label" for="{{ form.country.id_for_label }}">
-                  <i class="bx bx-flag"></i> البلد
+                <label class="form-label" for="{{ form.district.id_for_label }}">
+                  <i class="bx bx-map-pin"></i> عنوان الحي
                 </label>
                 <div class="input-group input-group-merge">
-                  {{ form.country }}
+                  {{ form.district }}
                 </div>
+                {% if form.district.errors %}
+                  <div class="invalid-feedback d-block">{{ form.district.errors|striptags }}</div>
+                {% endif %}
               </div>
 
               <div class="form-group col-12 col-md-6">
@@ -116,11 +125,26 @@
                 <div class="input-group input-group-merge">
                   {{ form.city }}
                 </div>
+                {% if form.city.errors %}
+                  <div class="invalid-feedback d-block">{{ form.city.errors|striptags }}</div>
+                {% endif %}
               </div>
-             
             </div>
 
+            <!-- الصف الرابع: البلد + الرمز البريدي -->
             <div class="row mb-3">
+              <div class="form-group col-12 col-md-6">
+                <label class="form-label" for="{{ form.country.id_for_label }}">
+                  <i class="bx bx-flag"></i> البلد
+                </label>
+                <div class="input-group input-group-merge">
+                  {{ form.country }}
+                </div>
+                {% if form.country.errors %}
+                  <div class="invalid-feedback d-block">{{ form.country.errors|striptags }}</div>
+                {% endif %}
+              </div>
+
               <div class="form-group col-12 col-md-6">
                 <label class="form-label" for="{{ form.postal_code.id_for_label }}">
                   <i class="bx bx-mail-send"></i> الرمز البريدي
@@ -128,7 +152,14 @@
                 <div class="input-group input-group-merge">
                   {{ form.postal_code }}
                 </div>
+                {% if form.postal_code.errors %}
+                  <div class="invalid-feedback d-block">{{ form.postal_code.errors|striptags }}</div>
+                {% endif %}
               </div>
+            </div>
+
+            <!-- الصف الخامس: رقم المبنى + الرقم الضريبي -->
+            <div class="row mb-3">
               <div class="form-group col-12 col-md-6">
                 <label class="form-label" for="{{ form.building_number.id_for_label }}">
                   <i class="bx bx-buildings"></i> رقم المبنى
@@ -136,13 +167,11 @@
                 <div class="input-group input-group-merge">
                   {{ form.building_number }}
                 </div>
+                {% if form.building_number.errors %}
+                  <div class="invalid-feedback d-block">{{ form.building_number.errors|striptags }}</div>
+                {% endif %}
               </div>
-            </div>
 
-            
-
-            <!-- البيانات الضريبية والتجارية -->
-            <div class="row mb-3">
               <div class="form-group col-12 col-md-6">
                 <label class="form-label" for="{{ form.vat_number.id_for_label }}">
                   <i class="bx bx-receipt"></i> الرقم الضريبي
@@ -150,14 +179,24 @@
                 <div class="input-group input-group-merge">
                   {{ form.vat_number }}
                 </div>
+                {% if form.vat_number.errors %}
+                  <div class="invalid-feedback d-block">{{ form.vat_number.errors|striptags }}</div>
+                {% endif %}
               </div>
-              <div class="form-group col-12 col-md-6">
+            </div>
+
+            <!-- الصف السادس: رقم السجل التجاري -->
+            <div class="row mb-3">
+              <div class="form-group col-12 col-md-12">
                 <label class="form-label" for="{{ form.cr_number.id_for_label }}">
                   <i class="bx bx-file"></i> رقم السجل التجاري
                 </label>
                 <div class="input-group input-group-merge">
                   {{ form.cr_number }}
                 </div>
+                {% if form.cr_number.errors %}
+                  <div class="invalid-feedback d-block">{{ form.cr_number.errors|striptags }}</div>
+                {% endif %}
               </div>
             </div>
 
@@ -167,10 +206,13 @@
                 <i class="bx bx-sticky-note"></i> ملاحظات إضافية
               </label>
               {{ form.notes }}
+              {% if form.notes.errors %}
+                <div class="invalid-feedback d-block">{{ form.notes.errors|striptags }}</div>
+              {% endif %}
             </div>
 
             <!-- زر التحديث -->
-            <button type="submit" class="btn btn-primary">تحديث المورد</button>
+            <button type="submit" class="btn btn-primary">تحديث العميل</button>
           </form>
         </div>
       </div>

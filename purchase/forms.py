@@ -18,7 +18,7 @@ class PurchaseInvoiceForm(forms.ModelForm):
     class Meta:
         model = Invoice
         fields = [
-            'supplier', 'invoice_type', 'invoice_number', 'invoice_date',
+            'supplier', 'branch', 'invoice_type', 'invoice_number', 'invoice_date',
             'payment_method', 'notes', 'subtotal_before_discount', 'discount_percentage',
             'discount', 'subtotal_before_tax', 'tax_rate', 'tax_amount', 'total_amount',
             'qr_code','return_reason','original_invoice',
@@ -27,6 +27,7 @@ class PurchaseInvoiceForm(forms.ModelForm):
         ]
         widgets = {
             'supplier': forms.Select(attrs={'class': 'form-control'}),
+            'branch': forms.Select(attrs={'class': 'form-control'}),
             'invoice_type': forms.HiddenInput(), 
             'return_reason': forms.HiddenInput(),
             'original_invoice': forms.HiddenInput(),
@@ -82,6 +83,8 @@ class PurchaseInvoiceForm(forms.ModelForm):
         # تعيين القيمة الافتراضية لحقل invoice_type إلى 'purchase'
         self.fields['supplier'].empty_label = "---    اختار مورد     ---"
 
+        self.fields['branch'].empty_label = "الفرع"
+        self.fields['branch'].queryset = self.fields['branch'].queryset.filter(is_active=True)
         self.fields['invoice_type'].initial = 'purchase'
         self.fields['invoice_type'].required = False  # جعل الحقل غير مطلوب لأنه مخفي
         self.instance.invoice_type = 'purchase'

@@ -20,7 +20,7 @@ class SalesInvoiceForm(forms.ModelForm):
     class Meta:
         model = Invoice
         fields = [
-            'customer', 'invoice_type', 'invoice_number', 'invoice_date',
+            'customer', 'branch', 'invoice_type', 'invoice_number', 'invoice_date',
             'payment_method', 'notes', 'subtotal_before_discount', 'discount_percentage',
             'discount', 'subtotal_before_tax', 'tax_rate', 'tax_amount', 'total_amount',
             'qr_code', 'return_reason', 'original_invoice',
@@ -29,6 +29,7 @@ class SalesInvoiceForm(forms.ModelForm):
         ]
         widgets = {
             'customer': forms.Select(attrs={'class': 'form-control'}),
+            'branch': forms.Select(attrs={'class': 'form-control'}),
             'invoice_type': forms.HiddenInput(),
             'return_reason': forms.HiddenInput(),
             'original_invoice': forms.HiddenInput(),
@@ -84,6 +85,8 @@ class SalesInvoiceForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         # مثال: تعيين القيمة الافتراضية لحقل invoice_type إلى 'sales'
         self.fields['customer'].empty_label = "اختار عميل"
+        self.fields['branch'].empty_label = "الفرع"
+        self.fields['branch'].queryset = self.fields['branch'].queryset.filter(is_active=True)
         self.fields['invoice_type'].initial = 'sales'
         self.fields['invoice_type'].required = False
         self.instance.invoice_type = 'sales'
