@@ -427,7 +427,7 @@
               <td class="col-en"></td><td class="col-val">ريال سعودي</td><td class="col-ar">العملة</td>
             </tr>
             <tr>
-              <td class="col-en"></td> {{ invoice.branch.name|default:"" }}<td class="col-val"></td><td class="col-ar middle-divider">الفرع</td>
+              <td class="col-en"></td><td class="col-val">{{ invoice.branch.name|default:"" }}</td><td class="col-ar middle-divider">الفرع</td>
               <td class="col-en">Date Due</td><td class="col-val">{{ invoice.due_date|date:"Y/m/d"|default:"" }}</td><td class="col-ar">تاريخ الاستحقاق</td>
             </tr>
             <tr>
