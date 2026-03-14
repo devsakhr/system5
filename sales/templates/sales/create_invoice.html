@@ -361,81 +361,146 @@
         <h5 class="modal-title" id="customerModalLabel">إضافة عميل جديد</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      {# Use a separate form tag for the modal #}
+
       <form id="customerForm" method="post" action="{% url 'add_customer' %}">
         {% csrf_token %}
+
         <div class="modal-body">
-          {# Display non-field errors for the customer form if any #}
           {% if customer_form.non_field_errors %}
-            <div class="alert alert-danger">{{ customer_form.non_field_errors }}</div>
+            <div class="alert alert-danger">
+              {{ customer_form.non_field_errors }}
+            </div>
           {% endif %}
 
-          <!-- الصف الأول -->
+          <!-- الصف الأول: الاسم + الهاتف -->
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="{{ customer_form.name.id_for_label }}" class="form-label">{{ customer_form.name.label }}</label>
+              <label for="{{ customer_form.name.id_for_label }}" class="form-label">
+                {{ customer_form.name.label }}
+              </label>
               {{ customer_form.name }}
-              {% if customer_form.name.errors %}<div class="invalid-feedback d-block">{{ customer_form.name.errors|striptags }}</div>{% endif %}
+              {% if customer_form.name.errors %}
+                <div class="invalid-feedback d-block">{{ customer_form.name.errors|striptags }}</div>
+              {% endif %}
             </div>
+
             <div class="col-md-6">
-              <label for="{{ customer_form.phone.id_for_label }}" class="form-label">{{ customer_form.phone.label }}</label>
+              <label for="{{ customer_form.phone.id_for_label }}" class="form-label">
+                {{ customer_form.phone.label }}
+              </label>
               {{ customer_form.phone }}
-              {% if customer_form.phone.errors %}<div class="invalid-feedback d-block">{{ customer_form.phone.errors|striptags }}</div>{% endif %}
+              {% if customer_form.phone.errors %}
+                <div class="invalid-feedback d-block">{{ customer_form.phone.errors|striptags }}</div>
+              {% endif %}
             </div>
           </div>
 
-          <!-- الصف الثاني -->
+          <!-- الصف الثاني: البريد + العنوان -->
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="{{ customer_form.email.id_for_label }}" class="form-label">{{ customer_form.email.label }}</label>
+              <label for="{{ customer_form.email.id_for_label }}" class="form-label">
+                {{ customer_form.email.label }}
+              </label>
               {{ customer_form.email }}
-              {% if customer_form.email.errors %}<div class="invalid-feedback d-block">{{ customer_form.email.errors|striptags }}</div>{% endif %}
+              {% if customer_form.email.errors %}
+                <div class="invalid-feedback d-block">{{ customer_form.email.errors|striptags }}</div>
+              {% endif %}
             </div>
+
             <div class="col-md-6">
-              <label for="{{ customer_form.address_line.id_for_label }}" class="form-label">{{ customer_form.address_line.label }}</label>
+              <label for="{{ customer_form.address_line.id_for_label }}" class="form-label">
+                {{ customer_form.address_line.label }}
+              </label>
               {{ customer_form.address_line }}
-              {% if customer_form.address_line.errors %}<div class="invalid-feedback d-block">{{ customer_form.address_line.errors|striptags }}</div>{% endif %}
+              {% if customer_form.address_line.errors %}
+                <div class="invalid-feedback d-block">{{ customer_form.address_line.errors|striptags }}</div>
+              {% endif %}
             </div>
           </div>
 
-          <!-- الصف الثالث -->
+          <!-- الصف الثالث: المدينة + الرمز البريدي -->
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="{{ customer_form.city.id_for_label }}" class="form-label">{{ customer_form.city.label }}</label>
+              <label for="{{ customer_form.city.id_for_label }}" class="form-label">
+                {{ customer_form.city.label }}
+              </label>
               {{ customer_form.city }}
-              {% if customer_form.city.errors %}<div class="invalid-feedback d-block">{{ customer_form.city.errors|striptags }}</div>{% endif %}
+              {% if customer_form.city.errors %}
+                <div class="invalid-feedback d-block">{{ customer_form.city.errors|striptags }}</div>
+              {% endif %}
             </div>
+
             <div class="col-md-6">
-              <label for="{{ customer_form.country.id_for_label }}" class="form-label">{{ customer_form.country.label }}</label>
-              {{ customer_form.country }}
-              {% if customer_form.country.errors %}<div class="invalid-feedback d-block">{{ customer_form.country.errors|striptags }}</div>{% endif %}
+              <label for="{{ customer_form.postal_code.id_for_label }}" class="form-label">
+                {{ customer_form.postal_code.label }}
+              </label>
+              {{ customer_form.postal_code }}
+              {% if customer_form.postal_code.errors %}
+                <div class="invalid-feedback d-block">{{ customer_form.postal_code.errors|striptags }}</div>
+              {% endif %}
             </div>
           </div>
 
-          <!-- الصف الرابع -->
+          <!-- الصف الرابع: رقم المبنى + البلد -->
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="{{ customer_form.vat_number.id_for_label }}" class="form-label">{{ customer_form.vat_number.label }}</label>
-              {{ customer_form.vat_number }}
-              {% if customer_form.vat_number.errors %}<div class="invalid-feedback d-block">{{ customer_form.vat_number.errors|striptags }}</div>{% endif %}
+              <label for="{{ customer_form.building_number.id_for_label }}" class="form-label">
+                {{ customer_form.building_number.label }}
+              </label>
+              {{ customer_form.building_number }}
+              {% if customer_form.building_number.errors %}
+                <div class="invalid-feedback d-block">{{ customer_form.building_number.errors|striptags }}</div>
+              {% endif %}
             </div>
+
             <div class="col-md-6">
-              <label for="{{ customer_form.cr_number.id_for_label }}" class="form-label">{{ customer_form.cr_number.label }}</label>
-              {{ customer_form.cr_number }}
-              {% if customer_form.cr_number.errors %}<div class="invalid-feedback d-block">{{ customer_form.cr_number.errors|striptags }}</div>{% endif %}
+              <label for="{{ customer_form.country.id_for_label }}" class="form-label">
+                {{ customer_form.country.label }}
+              </label>
+              {{ customer_form.country }}
+              {% if customer_form.country.errors %}
+                <div class="invalid-feedback d-block">{{ customer_form.country.errors|striptags }}</div>
+              {% endif %}
             </div>
           </div>
 
-          <!-- الصف الخامس -->
+          <!-- الصف الخامس: الرقم الضريبي + السجل التجاري -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="{{ customer_form.vat_number.id_for_label }}" class="form-label">
+                {{ customer_form.vat_number.label }}
+              </label>
+              {{ customer_form.vat_number }}
+              {% if customer_form.vat_number.errors %}
+                <div class="invalid-feedback d-block">{{ customer_form.vat_number.errors|striptags }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-6">
+              <label for="{{ customer_form.cr_number.id_for_label }}" class="form-label">
+                {{ customer_form.cr_number.label }}
+              </label>
+              {{ customer_form.cr_number }}
+              {% if customer_form.cr_number.errors %}
+                <div class="invalid-feedback d-block">{{ customer_form.cr_number.errors|striptags }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- الصف السادس: الملاحظات -->
           <div class="row mb-3">
             <div class="col-md-12">
-              <label for="{{ customer_form.notes.id_for_label }}" class="form-label">{{ customer_form.notes.label }}</label>
+              <label for="{{ customer_form.notes.id_for_label }}" class="form-label">
+                {{ customer_form.notes.label }}
+              </label>
               {{ customer_form.notes }}
-              {% if customer_form.notes.errors %}<div class="invalid-feedback d-block">{{ customer_form.notes.errors|striptags }}</div>{% endif %}
+              {% if customer_form.notes.errors %}
+                <div class="invalid-feedback d-block">{{ customer_form.notes.errors|striptags }}</div>
+              {% endif %}
             </div>
           </div>
-
         </div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
           <button type="submit" class="btn btn-primary">حفظ العميل</button>
