@@ -1,20 +1,19 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ title }}</title>
   <style>
+    /* إعدادات عامة لتجنب تجاوز العناصر لحجمها */
     * {
       box-sizing: border-box;
+      max-width: 100%;
     }
 
     :root {
-      --page-margin-x: 3mm;
-      --page-margin-top: 2mm;
-      --page-margin-bottom: 3mm;
-      --page-safe-width: calc(210mm - (var(--page-margin-x) * 2));
-      --page-safe-height: calc(297mm - var(--page-margin-top) - var(--page-margin-bottom));
+      --page-safe-width: 100%;
+      --page-safe-height: 290mm;
     }
 
     html,
@@ -31,12 +30,13 @@
     }
 
     .screen-toolbar {
-      width: var(--page-safe-width);
-      margin: 10px auto 0;
+      max-width: 210mm;
+      margin: 10px auto 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
+      padding: 0 10px;
     }
 
     .screen-toolbar .title {
@@ -57,15 +57,16 @@
     }
 
     .print-root {
-      width: var(--page-safe-width);
-      margin: 10px auto;
+      width: 100%;
+      max-width: 210mm;
+      margin: 0 auto;
     }
 
     .invoice-page {
-      width: var(--page-safe-width);
+      width: 100%;
       min-height: var(--page-safe-height);
       background: #fff;
-      padding: 1.5mm 0;
+      padding: 5mm;
       margin: 0 0 10px;
       page-break-after: always;
       break-after: page;
@@ -75,6 +76,7 @@
     .invoice-page:last-child {
       page-break-after: auto;
       break-after: auto;
+      margin-bottom: 0;
     }
 
     .page-content {
@@ -88,7 +90,7 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 18px;
+      gap: 10px;
       width: 100%;
       padding: 8px 12px;
       margin-bottom: 12px;
@@ -98,20 +100,20 @@
     }
 
     .company-header > div {
-      flex: 1 1 0;
+      flex: 1;
       min-width: 0;
     }
 
     .company-header .en-info {
       text-align: left;
       direction: ltr;
-      overflow-wrap: anywhere;
+      word-wrap: break-word;
     }
 
     .company-header .ar-info {
       text-align: right;
       direction: rtl;
-      overflow-wrap: anywhere;
+      word-wrap: break-word;
     }
 
     .middle-row {
@@ -124,20 +126,20 @@
     }
 
     .qr-code {
-      width: 120px;
-      flex: 0 0 120px;
+      width: 110px;
+      flex: 0 0 110px;
       text-align: left;
     }
 
     .qr-code img {
-      width: 115px;
-      height: 115px;
+      width: 100px;
+      height: 100px;
       object-fit: contain;
       display: block;
     }
 
     .invoice-title {
-      flex: 1 1 auto;
+      flex: 1;
       text-align: center;
       line-height: 1.35;
       font-weight: bold;
@@ -152,9 +154,10 @@
       font-size: 15px;
     }
 
+    /* تعديل هام: منع الاقتصاص باستخدام نسب مئوية بدلاً من mm */
     .location-box {
-      width: 108mm;
-      flex: 0 0 108mm;
+      flex: 0 0 48%; /* يأخذ 48% كحد أقصى من العرض */
+      max-width: 48%;
       padding: 8px 10px;
       line-height: 1.45;
       font-size: 13px;
@@ -164,14 +167,16 @@
     .location-box-top {
       display: flex;
       justify-content: space-between;
-      gap: 8px;
+      gap: 5px;
       direction: rtl;
       align-items: center;
+      flex-wrap: wrap; /* للسماح بالنزول لسطر إذا ضاقت المساحة */
     }
 
     .location-box-center {
       text-align: center;
       direction: rtl;
+      word-wrap: break-word;
     }
 
     .invoice-type-title {
@@ -194,7 +199,7 @@
     .info-table {
       border: 2px solid #000;
       margin-bottom: 10px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: bold;
     }
 
@@ -203,38 +208,40 @@
       border-left: none;
       border-right: none;
       border-bottom: 1px solid #000;
-      padding: 6px 8px;
+      padding: 6px 4px;
       vertical-align: middle;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      /* تعديل هام: السماح للنصوص بالنزول لسطر جديد لمنع الاقتصاص */
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
 
     .info-table tr:last-child td {
       border-bottom: none;
     }
 
-    .col-en { text-align: left; width: 13%; direction: ltr; }
-    .col-val { text-align: center; width: 20%; }
+    .col-en { text-align: left; width: 14%; direction: ltr; }
+    .col-val { text-align: center; width: 19%; }
     .col-ar { text-align: right; width: 17%; direction: rtl; }
     .middle-divider { border-right: 2px solid #000 !important; }
 
     .items-table {
       border: 2px solid #000;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: bold;
     }
 
     .items-table th,
     .items-table td {
       border: 1px solid #000;
-      padding: 8px 4px;
+      padding: 6px 2px;
       text-align: center;
       vertical-align: middle;
+      word-wrap: break-word;
     }
 
     .items-table th {
       background-color: #d9d9d9;
+      font-size: 11px;
     }
 
     .items-table tbody td {
@@ -244,11 +251,12 @@
 
     .items-table .name-cell {
       direction: rtl;
-      text-align: center;
+      text-align: right; /* الأفضل لأسماء المنتجات العربية */
+      padding-right: 4px;
     }
 
     .filler-row td {
-      height: 160px;
+      height: 100px;
       border-bottom: none !important;
     }
 
@@ -262,6 +270,7 @@
     .totals-table td {
       border: 1px solid #000;
       padding: 6px 8px;
+      word-wrap: break-word;
     }
 
     .totals-table td:nth-child(1) {
@@ -283,7 +292,7 @@
     .bank-panel {
       width: 100%;
       margin-top: 10px;
-      padding: 12px 15px;
+      padding: 10px 15px;
       text-align: center;
       direction: rtl;
       line-height: 1.6;
@@ -299,22 +308,16 @@
       font-size: 15px;
     }
 
+    /* --- إعدادات الطباعة الدقيقة --- */
     @page {
       size: A4 portrait;
-      margin: var(--page-margin-top) var(--page-margin-x) var(--page-margin-bottom);
+      margin: 5mm; /* ترك هامش 5 ملم آمن للطابعة */
     }
 
     @media print {
-      html,
-      body {
-        width: auto;
+      html, body {
+        width: 100% !important;
         background: #fff !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-        forced-color-adjust: none;
-      }
-
-      body {
         margin: 0 !important;
         padding: 0 !important;
       }
@@ -324,40 +327,30 @@
       }
 
       .print-root {
-        width: auto;
+        width: 100% !important;
+        max-width: 100% !important;
         margin: 0 !important;
       }
 
       .invoice-page {
-        width: auto;
-        min-height: var(--page-safe-height);
-        padding: 0;
+        width: 100% !important;
+        min-height: auto !important; /* السماح للمتصفح بحساب الارتفاع */
+        padding: 0 !important;
         margin: 0 !important;
-        overflow: visible;
+        border: none !important;
+        box-shadow: none !important;
+        overflow: visible !important; /* إظهار أي محتوى مخفي */
+      }
+
+      /* لضمان طباعة الألوان بدقة */
+      * {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
         forced-color-adjust: none;
       }
 
-      .page-content,
-      .company-header,
-      .middle-row,
-      .invoice-type-row,
-      .invoice-info-table,
-      .items-table,
-      .totals-table,
-      .bank-panel {
-        max-width: 100%;
-      }
-
-      .cyan-bg,
-      .company-header,
-      .address-panel,
-      .bank-panel {
+      .cyan-bg {
         background-color: #a8f4f4 !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-        forced-color-adjust: none;
       }
     }
   </style>
@@ -393,7 +386,7 @@
             {% if invoice.company and invoice.company.vat_number %}
               <img src="{% url 'generate_qr_code' invoice.id %}" alt="QR Code">
             {% else %}
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=VAT:312014639200003" alt="QR Code">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=VAT:312014639200003" alt="QR Code">
             {% endif %}
           </div>
 
@@ -454,7 +447,7 @@
               <td class="col-en">Version number</td><td class="col-val">1</td><td class="col-ar">رقم النسخة</td>
             </tr>
             <tr>
-              <td class="col-en">Customer building number</td><td class="col-val">{{ party.building_number|default:"2829" }}</td><td class="col-ar middle-divider">رقم مبنى العميل</td>
+              <td class="col-en">Customer building no</td><td class="col-val">{{ party.building_number|default:"2829" }}</td><td class="col-ar middle-divider">رقم مبنى العميل</td>
               <td class="col-en">page number</td><td class="col-val">1</td><td class="col-ar">رقم الصفحة</td>
             </tr>
           </tbody>
@@ -467,8 +460,8 @@
             <col style="width: 11%;">
             <col style="width: 9%;">
             <col style="width: 9%;">
-            <col style="width: 6%;">
-            <col style="width: 28%;">
+            <col style="width: 7%;">
+            <col style="width: 27%;">
             <col style="width: 10%;">
             <col style="width: 6%;">
           </colgroup>
@@ -575,8 +568,8 @@
               <col style="width: 11%;">
               <col style="width: 9%;">
               <col style="width: 9%;">
-              <col style="width: 6%;">
-              <col style="width: 28%;">
+              <col style="width: 7%;">
+              <col style="width: 27%;">
               <col style="width: 10%;">
               <col style="width: 6%;">
             </colgroup>
