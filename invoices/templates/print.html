@@ -439,11 +439,11 @@
               <td class="col-en">Billing time</td><td class="col-val">{{ invoice.invoice_date|date:"A h : i Y/m/d"|default:"pm 11 : 11 2026/03/08" }}</td><td class="col-ar">وقت الفاتورة</td>
             </tr>
             <tr>
-              <td class="col-en">Client's neighborhood</td><td class="col-val">البلد</td><td class="col-ar middle-divider">الحي للعميل</td>
+              <td class="col-en">Client's neighborhood</td><td class="col-val">{{ party.district|default:"22233" }}</td><td class="col-ar middle-divider">الحي للعميل</td>
               <td class="col-en">The seller</td><td class="col-val">{{ invoice.company.invoice_seller_name|default:"الإدارة الرئيسية" }}</td><td class="col-ar">البائع</td>
             </tr>
             <tr>
-              <td class="col-en">Customer Street</td><td class="col-val">الباشا</td><td class="col-ar middle-divider">شارع العميل</td>
+              <td class="col-en">Customer Street</td><td class="col-val">{{ party.address_line|default:"" }}</td><td class="col-ar middle-divider">شارع العميل</td>
               <td class="col-en">Version number</td><td class="col-val">1</td><td class="col-ar">رقم النسخة</td>
             </tr>
             <tr>
