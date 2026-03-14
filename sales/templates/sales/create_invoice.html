@@ -158,15 +158,26 @@
 
             </div>
 
+            <!-- سطر لعرض اختيار الفرع إذا كان موجوداً -->
+           
 
             <!-- سطر الحقول الثاني -->
+           <!-- سطر الحقول الثاني -->
             <div class="row g-3 mb-3">
-              <div class="col-md-6">
+              <!-- إضافة حقل الفرع هنا -->
+              <div class="col-md-4">
+                <label for="{{ form.branch.id_for_label }}" class="form-label">الفرع</label>
+                {{ form.branch }}
+                {% if form.branch.errors %}<div class="invalid-feedback d-block">{{ form.branch.errors|striptags }}</div>{% endif %}
+              </div>
+              
+              <div class="col-md-4">
                 <label for="{{ form.payment_method.id_for_label }}" class="form-label">طريقة الدفع</label>
                 {{ form.payment_method }}
                  {% if form.payment_method.errors %}<div class="invalid-feedback d-block">{{ form.payment_method.errors|striptags }}</div>{% endif %}
               </div>
-              <div class="col-md-6">
+              
+              <div class="col-md-4">
                 <label for="{{ form.invoice_date.id_for_label }}" class="form-label">تاريخ الفاتورة</label>
                 {{ form.invoice_date }}
                  {% if form.invoice_date.errors %}<div class="invalid-feedback d-block">{{ form.invoice_date.errors|striptags }}</div>{% endif %}
