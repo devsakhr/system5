@@ -1,5 +1,6 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -83,8 +84,13 @@
       width: 100%;
     }
 
-    .cyan-bg { background-color: #a8f4f4; }
-    .thick-border { border: 2px solid #000; }
+    .cyan-bg {
+      background-color: #a8f4f4;
+    }
+
+    .thick-border {
+      border: 2px solid #000;
+    }
 
     .company-header {
       display: flex;
@@ -99,7 +105,7 @@
       font-weight: bold;
     }
 
-    .company-header > div {
+    .company-header>div {
       flex: 1;
       min-width: 0;
     }
@@ -156,7 +162,8 @@
 
     /* تعديل هام: منع الاقتصاص باستخدام نسب مئوية بدلاً من mm */
     .location-box {
-      flex: 0 0 48%; /* يأخذ 48% كحد أقصى من العرض */
+      flex: 0 0 48%;
+      /* يأخذ 48% كحد أقصى من العرض */
       max-width: 48%;
       padding: 8px 10px;
       line-height: 1.45;
@@ -170,7 +177,8 @@
       gap: 5px;
       direction: rtl;
       align-items: center;
-      flex-wrap: wrap; /* للسماح بالنزول لسطر إذا ضاقت المساحة */
+      flex-wrap: wrap;
+      /* للسماح بالنزول لسطر إذا ضاقت المساحة */
     }
 
     .location-box-center {
@@ -219,10 +227,26 @@
       border-bottom: none;
     }
 
-    .col-en { text-align: left; width: 14%; direction: ltr; }
-    .col-val { text-align: center; width: 19%; }
-    .col-ar { text-align: right; width: 17%; direction: rtl; }
-    .middle-divider { border-right: 2px solid #000 !important; }
+    .col-en {
+      text-align: left;
+      width: 14%;
+      direction: ltr;
+    }
+
+    .col-val {
+      text-align: center;
+      width: 19%;
+    }
+
+    .col-ar {
+      text-align: right;
+      width: 17%;
+      direction: rtl;
+    }
+
+    .middle-divider {
+      border-right: 2px solid #000 !important;
+    }
 
     .items-table {
       border: 2px solid #000;
@@ -251,7 +275,8 @@
 
     .items-table .name-cell {
       direction: rtl;
-      text-align: right; /* الأفضل لأسماء المنتجات العربية */
+      text-align: right;
+      /* الأفضل لأسماء المنتجات العربية */
       padding-right: 4px;
     }
 
@@ -311,11 +336,14 @@
     /* --- إعدادات الطباعة الدقيقة --- */
     @page {
       size: A4 portrait;
-      margin: 5mm; /* ترك هامش 5 ملم آمن للطابعة */
+      margin: 5mm;
+      /* ترك هامش 5 ملم آمن للطابعة */
     }
 
     @media print {
-      html, body {
+
+      html,
+      body {
         width: 100% !important;
         background: #fff !important;
         margin: 0 !important;
@@ -334,12 +362,14 @@
 
       .invoice-page {
         width: 100% !important;
-        min-height: auto !important; /* السماح للمتصفح بحساب الارتفاع */
+        min-height: auto !important;
+        /* السماح للمتصفح بحساب الارتفاع */
         padding: 0 !important;
         margin: 0 !important;
         border: none !important;
         box-shadow: none !important;
-        overflow: visible !important; /* إظهار أي محتوى مخفي */
+        overflow: visible !important;
+        /* إظهار أي محتوى مخفي */
       }
 
       /* لضمان طباعة الألوان بدقة */
@@ -355,6 +385,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="screen-toolbar">
     <div class="title">{{ title }}</div>
@@ -384,9 +415,9 @@
         <div class="middle-row">
           <div class="qr-code">
             {% if invoice.company and invoice.company.vat_number %}
-              <img src="{% url 'generate_qr_code' invoice.id %}" alt="QR Code">
+            <img src="{% url 'generate_qr_code' invoice.id %}" alt="QR Code">
             {% else %}
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=VAT:312014639200003" alt="QR Code">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=VAT:312014639200003" alt="QR Code">
             {% endif %}
           </div>
 
@@ -402,53 +433,95 @@
               <span>الدولة - {{ invoice.company.country|default:"السعودية" }}</span>
             </div>
             <div class="location-box-center">الحي - {{ invoice.company.district|default:"حي البلد" }}</div>
-            <div class="location-box-center">رقم المبنى - {{ invoice.company.building_number|default:"3382" }} الرمز البريدي - {{ invoice.company.postal_code|default:"22236" }}</div>
+            <div class="location-box-center">رقم المبنى - {{ invoice.company.building_number|default:"3382" }} الرمز
+              البريدي - {{ invoice.company.postal_code|default:"22236" }}</div>
           </div>
         </div>
 
-        <div class="invoice-type-title">نوع الفاتورة {{ invoice.get_invoice_type_display|default:"فاتورة مبيعات" }}</div>
+        <div class="invoice-type-title">نوع الفاتورة {{ invoice.get_invoice_type_display|default:"فاتورة مبيعات" }}
+        </div>
 
         <table class="info-table">
           <tbody>
             <tr>
-              <td class="col-en">Customer</td><td class="col-val">{{ party.name|default:"" }}</td><td class="col-ar middle-divider">اسم العميل</td>
-              <td class="col-en">Inoivce NO</td><td class="col-val">{{ invoice.invoice_number|default:"100" }}</td><td class="col-ar">رقم الفاتورة</td>
+              <td class="col-en">Customer</td>
+              <td class="col-val">{{ party.name|default:"" }}</td>
+              <td class="col-ar middle-divider">اسم العميل</td>
+              <td class="col-en">Inoivce NO</td>
+              <td class="col-val">{{ invoice.invoice_number|default:"100" }}</td>
+              <td class="col-ar">رقم الفاتورة</td>
             </tr>
             <tr>
-              <td class="col-en">Address</td><td class="col-val">{{ party.address_line|default:"" }}</td><td class="col-ar middle-divider">عنوان العميل</td>
-              <td class="col-en">Issue Date</td><td class="col-val">{{ invoice.invoice_date|date:"Y/m/d"|default:"2026/03/08" }}</td><td class="col-ar">تاريخ الاصدار</td>
+              <td class="col-en">Address</td>
+              <td class="col-val">{{ party.address|default:"" }}</td>
+              <td class="col-ar middle-divider">عنوان العميل</td>
+              <td class="col-en">Issue Date</td>
+              <td class="col-val">{{ invoice.invoice_date|date:"Y/m/d"|default:"2026/03/08" }}</td>
+              <td class="col-ar">تاريخ الاصدار</td>
             </tr>
             <tr>
-              <td class="col-en">VatNoCust</td><td class="col-val">{{ party.vat_number|default:"" }}</td><td class="col-ar middle-divider">الرقم الضريبي للعميل</td>
-              <td class="col-en">Payment method</td><td class="col-val">{{ invoice.payment_method.name_ar|default:"أجل" }}</td><td class="col-ar">طريقة الدفع</td>
+              <td class="col-en">VatNoCust</td>
+              <td class="col-val">{{ party.vat_number|default:"" }}</td>
+              <td class="col-ar middle-divider">الرقم الضريبي للعميل</td>
+              <td class="col-en">Payment method</td>
+              <td class="col-val">{{ invoice.payment_method.name_ar|default:"أجل" }}</td>
+              <td class="col-ar">طريقة الدفع</td>
             </tr>
             <tr>
-              <td class="col-en">C.R</td><td class="col-val">{{ party.cr_number|default:"" }}</td><td class="col-ar middle-divider">السجل التجاري للعميل</td>
-              <td class="col-en"></td><td class="col-val">ريال سعودي</td><td class="col-ar">العملة</td>
+              <td class="col-en">C.R</td>
+              <td class="col-val">{{ party.cr_number|default:"" }}</td>
+              <td class="col-ar middle-divider">السجل التجاري للعميل</td>
+              <td class="col-en"></td>
+              <td class="col-val">ريال سعودي</td>
+              <td class="col-ar">العملة</td>
             </tr>
             <tr>
-              <td class="col-en"></td><td class="col-val">{{ invoice.branch.name|default:"" }}</td><td class="col-ar middle-divider">الفرع</td>
-              <td class="col-en">Date Due</td><td class="col-val">{{ invoice.due_date|date:"Y/m/d"|default:"" }}</td><td class="col-ar">تاريخ الاستحقاق</td>
+              <td class="col-en"></td>
+              <td class="col-val">{{ invoice.branch|default:"" }}</td>
+              <td class="col-ar middle-divider">الفرع</td>
+              <td class="col-en">Date Due</td>
+              <td class="col-val">{{ invoice.due_date|date:"Y/m/d"|default:"" }}</td>
+              <td class="col-ar">تاريخ الاستحقاق</td>
             </tr>
             <tr>
-              <td class="col-en">Customer No</td><td class="col-val">{{ party.phone|default:"" }}</td><td class="col-ar middle-divider">رقم جوال العميل</td>
-              <td class="col-en">P.O. No</td><td class="col-val"></td><td class="col-ar">رقم طلب العميل</td>
+              <td class="col-en">Customer No</td>
+              <td class="col-val">{{ party.phone|default:"" }}</td>
+              <td class="col-ar middle-divider">رقم جوال العميل</td>
+              <td class="col-en">P.O. No</td>
+              <td class="col-val"></td>
+              <td class="col-ar">رقم طلب العميل</td>
             </tr>
             <tr>
-              <td class="col-en">Postal code</td><td class="col-val">{{ party.postal_code|default:"22233" }}</td><td class="col-ar middle-divider">الرمز البريدي للعميل</td>
-              <td class="col-en">Billing time</td><td class="col-val">{{ invoice.invoice_date|date:"A h : i Y/m/d"|default:"pm 11 : 11 2026/03/08" }}</td><td class="col-ar">وقت الفاتورة</td>
+              <td class="col-en">Postal code</td>
+              <td class="col-val">{{ party.postal_code|default:"22233" }}</td>
+              <td class="col-ar middle-divider">الرمز البريدي للعميل</td>
+              <td class="col-en">Billing time</td>
+              <td class="col-val">{{ invoice.invoice_date|date:"A h : i Y/m/d"|default:"pm 11 : 11 2026/03/08" }}</td>
+              <td class="col-ar">وقت الفاتورة</td>
             </tr>
             <tr>
-              <td class="col-en">Client's neighborhood</td><td class="col-val">{{ party.district|default:"" }}</td><td class="col-ar middle-divider">الحي للعميل</td>
-              <td class="col-en">The seller</td><td class="col-val">{{ invoice.company.invoice_seller_name|default:"الإدارة الرئيسية" }}</td><td class="col-ar">البائع</td>
+              <td class="col-en">Client's neighborhood</td>
+              <td class="col-val">{{ party.district|default:"" }}</td>
+              <td class="col-ar middle-divider">الحي للعميل</td>
+              <td class="col-en">The seller</td>
+              <td class="col-val">{{ invoice.company.invoice_seller_name|default:"الإدارة الرئيسية" }}</td>
+              <td class="col-ar">البائع</td>
             </tr>
             <tr>
-              <td class="col-en">Customer Street</td><td class="col-val">{{ party.address_line|default:"" }}</td><td class="col-ar middle-divider">شارع العميل</td>
-              <td class="col-en">Version number</td><td class="col-val">1</td><td class="col-ar">رقم النسخة</td>
+              <td class="col-en">Customer Street</td>
+              <td class="col-val">{{ party.address_line|default:"" }}</td>
+              <td class="col-ar middle-divider">شارع العميل</td>
+              <td class="col-en">Version number</td>
+              <td class="col-val">1</td>
+              <td class="col-ar">رقم النسخة</td>
             </tr>
             <tr>
-              <td class="col-en">Customer building no</td><td class="col-val">{{ party.building_number|default:"2829" }}</td><td class="col-ar middle-divider">رقم مبنى العميل</td>
-              <td class="col-en">page number</td><td class="col-val">1</td><td class="col-ar">رقم الصفحة</td>
+              <td class="col-en">Customer building no</td>
+              <td class="col-val">{{ party.building_number|default:"2829" }}</td>
+              <td class="col-ar middle-divider">رقم مبنى العميل</td>
+              <td class="col-en">page number</td>
+              <td class="col-val">1</td>
+              <td class="col-ar">رقم الصفحة</td>
             </tr>
           </tbody>
         </table>
@@ -480,180 +553,189 @@
           </thead>
           <tbody>
             {% for item in first_page_items %}
-              <tr>
-                <td>{{ item.total_with_tax|floatformat:2 }}</td>
-                <td>{{ item.item_tax_amount|floatformat:2 }}</td>
-                <td>{{ item.total_before_tax|floatformat:2 }}</td>
-                <td>{{ item.unit_price|floatformat:2 }}</td>
-                <td>{{ item.quantity|floatformat:2 }}</td>
-                <td>
-                  {% if item.unit %}
-                    {{ item.unit.larger_unit_abbreviation }}
-                  {% elif item.product.unit %}
-                    {{ item.product.unit.abbreviation }}
-                  {% endif %}
-                </td>
-                <td class="name-cell">{{ item.product.name_ar|default:"-" }}</td>
-                <td>{{ item.product.serial_number|default:"-" }}</td>
-                <td>{{ forloop.counter }}</td>
-              </tr>
+            <tr>
+              <td>{{ item.total_with_tax|floatformat:2 }}</td>
+              <td>{{ item.item_tax_amount|floatformat:2 }}</td>
+              <td>{{ item.total_before_tax|floatformat:2 }}</td>
+              <td>{{ item.unit_price|floatformat:2 }}</td>
+              <td>{{ item.quantity|floatformat:2 }}</td>
+              <td>
+                {% if item.unit %}
+                {{ item.unit.larger_unit_abbreviation }}
+                {% elif item.product.unit %}
+                {{ item.product.unit.abbreviation }}
+                {% endif %}
+              </td>
+              <td class="name-cell">{{ item.product.name_ar|default:"-" }}</td>
+              <td>{{ item.product.serial_number|default:"-" }}</td>
+              <td>{{ forloop.counter }}</td>
+            </tr>
             {% empty %}
-              <tr>
-                <td colspan="9">لا توجد بنود في هذه الفاتورة.</td>
-              </tr>
+            <tr>
+              <td colspan="9">لا توجد بنود في هذه الفاتورة.</td>
+            </tr>
             {% endfor %}
 
             {% if show_filler_row and total_pages == 1 %}
-              <tr class="filler-row">
-                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-              </tr>
+            <tr class="filler-row">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
             {% endif %}
           </tbody>
         </table>
 
         {% if total_pages == 1 %}
-          <table class="totals-table">
-            <colgroup>
-              <col style="width: 45%;">
-              <col style="width: 15%;">
-              <col style="width: 25%;">
-              <col style="width: 15%;">
-            </colgroup>
-            <tbody>
-              <tr>
-                <td></td>
-                <td>{{ invoice.subtotal_before_tax|floatformat:2 }}</td>
-                <td>Total VAT.Excl</td>
-                <td>الاجمالي</td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>{{ invoice.discount|floatformat:2 }}</td>
-                <td>Discount allowed</td>
-                <td>الخصم</td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>{{ invoice.tax_amount|floatformat:2 }}</td>
-                <td>VAT ({{ invoice.tax_rate|floatformat:0 }}%)</td>
-                <td>ضريبة القيمة المضافة ({{ invoice.tax_rate|floatformat:0 }}%)</td>
-              </tr>
-              <tr>
-                <td>{{ total_words|default:"" }}</td>
-                <td>{{ invoice.total_amount|floatformat:2 }}</td>
-                <td>Balance Due</td>
-                <td>الاجمالي النهائي</td>
-              </tr>
-            </tbody>
-          </table>
+        <table class="totals-table">
+          <colgroup>
+            <col style="width: 45%;">
+            <col style="width: 15%;">
+            <col style="width: 25%;">
+            <col style="width: 15%;">
+          </colgroup>
+          <tbody>
+            <tr>
+              <td></td>
+              <td>{{ invoice.subtotal_before_tax|floatformat:2 }}</td>
+              <td>Total VAT.Excl</td>
+              <td>الاجمالي</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>{{ invoice.discount|floatformat:2 }}</td>
+              <td>Discount allowed</td>
+              <td>الخصم</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>{{ invoice.tax_amount|floatformat:2 }}</td>
+              <td>VAT ({{ invoice.tax_rate|floatformat:0 }}%)</td>
+              <td>ضريبة القيمة المضافة ({{ invoice.tax_rate|floatformat:0 }}%)</td>
+            </tr>
+            <tr>
+              <td>{{ total_words|default:"" }}</td>
+              <td>{{ invoice.total_amount|floatformat:2 }}</td>
+              <td>Balance Due</td>
+              <td>الاجمالي النهائي</td>
+            </tr>
+          </tbody>
+        </table>
 
-          <div class="bank-panel cyan-bg thick-border">
-            <div>{{ invoice.company.bank_name|default:"بنك الرياض" }}</div>
-            <div>رقم الحساب : {{ invoice.company.bank_account_number|default:"1574995589940" }}</div>
-            <div>الايبان: {{ invoice.company.iban|default:"SA4320000001574995589940" }}</div>
-          </div>
+        <div class="bank-panel cyan-bg thick-border">
+          <div>{{ invoice.company.bank_name|default:"بنك الرياض" }}</div>
+          <div>رقم الحساب : {{ invoice.company.bank_account_number|default:"1574995589940" }}</div>
+          <div>الايبان: {{ invoice.company.iban|default:"SA4320000001574995589940" }}</div>
+        </div>
         {% endif %}
       </div>
     </div>
 
     {% for page_items in remaining_item_pages %}
-      <div class="invoice-page">
-        <div class="page-content">
-          <div class="continued-note">تكملة الفاتورة رقم {{ invoice.invoice_number }}</div>
+    <div class="invoice-page">
+      <div class="page-content">
+        <div class="continued-note">تكملة الفاتورة رقم {{ invoice.invoice_number }}</div>
 
-          <table class="items-table">
-            <colgroup>
-              <col style="width: 11%;">
-              <col style="width: 10%;">
-              <col style="width: 11%;">
-              <col style="width: 9%;">
-              <col style="width: 9%;">
-              <col style="width: 7%;">
-              <col style="width: 27%;">
-              <col style="width: 10%;">
-              <col style="width: 6%;">
-            </colgroup>
-            <thead>
-              <tr>
-                <th>الاجمالي النهائي</th>
-                <th>القيمة المضافة</th>
-                <th>الاجمالي</th>
-                <th>سعر الوحدة</th>
-                <th>الكمية</th>
-                <th>الوحدة</th>
-                <th>اسم الصنف</th>
-                <th>رقم الصنف</th>
-                <th>SL</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for item in page_items %}
-                <tr>
-                  <td>{{ item.total_with_tax|floatformat:2 }}</td>
-                  <td>{{ item.item_tax_amount|floatformat:2 }}</td>
-                  <td>{{ item.total_before_tax|floatformat:2 }}</td>
-                  <td>{{ item.unit_price|floatformat:2 }}</td>
-                  <td>{{ item.quantity|floatformat:2 }}</td>
-                  <td>
-                    {% if item.unit %}
-                      {{ item.unit.larger_unit_abbreviation }}
-                    {% elif item.product.unit %}
-                      {{ item.product.unit.abbreviation }}
-                    {% endif %}
-                  </td>
-                  <td class="name-cell">{{ item.product.name_ar|default:"-" }}</td>
-                  <td>{{ item.product.serial_number|default:"-" }}</td>
-                  <td>{{ forloop.counter }}</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+        <table class="items-table">
+          <colgroup>
+            <col style="width: 11%;">
+            <col style="width: 10%;">
+            <col style="width: 11%;">
+            <col style="width: 9%;">
+            <col style="width: 9%;">
+            <col style="width: 7%;">
+            <col style="width: 27%;">
+            <col style="width: 10%;">
+            <col style="width: 6%;">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>الاجمالي النهائي</th>
+              <th>القيمة المضافة</th>
+              <th>الاجمالي</th>
+              <th>سعر الوحدة</th>
+              <th>الكمية</th>
+              <th>الوحدة</th>
+              <th>اسم الصنف</th>
+              <th>رقم الصنف</th>
+              <th>SL</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in page_items %}
+            <tr>
+              <td>{{ item.total_with_tax|floatformat:2 }}</td>
+              <td>{{ item.item_tax_amount|floatformat:2 }}</td>
+              <td>{{ item.total_before_tax|floatformat:2 }}</td>
+              <td>{{ item.unit_price|floatformat:2 }}</td>
+              <td>{{ item.quantity|floatformat:2 }}</td>
+              <td>
+                {% if item.unit %}
+                {{ item.unit.larger_unit_abbreviation }}
+                {% elif item.product.unit %}
+                {{ item.product.unit.abbreviation }}
+                {% endif %}
+              </td>
+              <td class="name-cell">{{ item.product.name_ar|default:"-" }}</td>
+              <td>{{ item.product.serial_number|default:"-" }}</td>
+              <td>{{ forloop.counter }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
 
-          {% if forloop.last %}
-            <table class="totals-table">
-              <colgroup>
-                <col style="width: 45%;">
-                <col style="width: 15%;">
-                <col style="width: 25%;">
-                <col style="width: 15%;">
-              </colgroup>
-              <tbody>
-                <tr>
-                  <td></td>
-                  <td>{{ invoice.subtotal_before_tax|floatformat:2 }}</td>
-                  <td>Total VAT.Excl</td>
-                  <td>الاجمالي</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>{{ invoice.discount|floatformat:2 }}</td>
-                  <td>Discount allowed</td>
-                  <td>الخصم</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>{{ invoice.tax_amount|floatformat:2 }}</td>
-                  <td>VAT ({{ invoice.tax_rate|floatformat:0 }}%)</td>
-                  <td>ضريبة القيمة المضافة ({{ invoice.tax_rate|floatformat:0 }}%)</td>
-                </tr>
-                <tr>
-                  <td>{{ total_words|default:"" }}</td>
-                  <td>{{ invoice.total_amount|floatformat:2 }}</td>
-                  <td>Balance Due</td>
-                  <td>الاجمالي النهائي</td>
-                </tr>
-              </tbody>
-            </table>
+        {% if forloop.last %}
+        <table class="totals-table">
+          <colgroup>
+            <col style="width: 45%;">
+            <col style="width: 15%;">
+            <col style="width: 25%;">
+            <col style="width: 15%;">
+          </colgroup>
+          <tbody>
+            <tr>
+              <td></td>
+              <td>{{ invoice.subtotal_before_tax|floatformat:2 }}</td>
+              <td>Total VAT.Excl</td>
+              <td>الاجمالي</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>{{ invoice.discount|floatformat:2 }}</td>
+              <td>Discount allowed</td>
+              <td>الخصم</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>{{ invoice.tax_amount|floatformat:2 }}</td>
+              <td>VAT ({{ invoice.tax_rate|floatformat:0 }}%)</td>
+              <td>ضريبة القيمة المضافة ({{ invoice.tax_rate|floatformat:0 }}%)</td>
+            </tr>
+            <tr>
+              <td>{{ total_words|default:"" }}</td>
+              <td>{{ invoice.total_amount|floatformat:2 }}</td>
+              <td>Balance Due</td>
+              <td>الاجمالي النهائي</td>
+            </tr>
+          </tbody>
+        </table>
 
-            <div class="bank-panel cyan-bg thick-border">
-              <div>{{ invoice.company.bank_name|default:"بنك الرياض" }}</div>
-              <div>رقم الحساب : {{ invoice.company.bank_account_number|default:"1574995589940" }}</div>
-              <div>الايبان: {{ invoice.company.iban|default:"SA4320000001574995589940" }}</div>
-            </div>
-          {% endif %}
+        <div class="bank-panel cyan-bg thick-border">
+          <div>{{ invoice.company.bank_name|default:"بنك الرياض" }}</div>
+          <div>رقم الحساب : {{ invoice.company.bank_account_number|default:"1574995589940" }}</div>
+          <div>الايبان: {{ invoice.company.iban|default:"SA4320000001574995589940" }}</div>
         </div>
+        {% endif %}
       </div>
+    </div>
     {% endfor %}
   </div>
 </body>
+
 </html>

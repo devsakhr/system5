@@ -89,7 +89,7 @@ class SupplierForm(forms.ModelForm):
         fields = [
             'name', 
             'phone', 
-            'email',
+            'address',
             'address_line',
             'city',
             'postal_code',
@@ -109,13 +109,13 @@ class SupplierForm(forms.ModelForm):
                 'class': 'form-control', 
                 'placeholder': 'رقم الهاتف / الجوال'
             }),
-            'email': forms.EmailInput(attrs={
+            'address': forms.TextInput(attrs={
                 'class': 'form-control', 
-                'placeholder': 'البريد الإلكتروني'
+                'placeholder': ' العنوان '
             }),
             'address_line': forms.TextInput(attrs={
                 'class': 'form-control', 
-                'placeholder': ' العنوان '
+                'placeholder': ' العنوان السطر 2'
             }),
            
             'city': forms.TextInput(attrs={
@@ -156,7 +156,7 @@ class CustomerForm(forms.ModelForm):
         fields = [
             'name',
             'phone',
-            'email',
+            'address',
             'address_line',
             'district',
             'city',
@@ -176,13 +176,13 @@ class CustomerForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'رقم الهاتف / الجوال'
             }),
-            'email': forms.EmailInput(attrs={
+             'address': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'البريد الإلكتروني'
+                'placeholder': 'عنوان العميل'
             }),
             'address_line': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'العنوان'
+                'placeholder': 'عنوان الشارع'
             }),
             'district': forms.TextInput(attrs={
                 'class': 'form-control',

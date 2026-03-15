@@ -24,7 +24,7 @@
                   {{ form.name }}
                 </div>
                 {% if form.name.errors %}
-                  <div class="invalid-feedback d-block">{{ form.name.errors|striptags }}</div>
+                <div class="invalid-feedback d-block">{{ form.name.errors|striptags }}</div>
                 {% endif %}
               </div>
 
@@ -36,7 +36,7 @@
                   {{ form.phone }}
                 </div>
                 {% if form.phone.errors %}
-                  <div class="invalid-feedback d-block">{{ form.phone.errors|striptags }}</div>
+                <div class="invalid-feedback d-block">{{ form.phone.errors|striptags }}</div>
                 {% endif %}
               </div>
             </div>
@@ -44,14 +44,14 @@
             <!-- الصف الثاني: البريد الإلكتروني + عنوان الشارع -->
             <div class="row mb-3">
               <div class="col-md-6">
-                <label class="form-label" for="{{ form.email.id_for_label }}">
-                  <i class="bx bx-envelope"></i> البريد الإلكتروني
+                <label class="form-label" for="{{ form.address.id_for_label }}">
+                  <i class="bx bx-map"></i> عنوان العميل
                 </label>
                 <div class="input-group input-group-merge">
-                  {{ form.email }}
+                  {{ form.address }}
                 </div>
-                {% if form.email.errors %}
-                  <div class="invalid-feedback d-block">{{ form.email.errors|striptags }}</div>
+                {% if form.address.errors %}
+                <div class="invalid-feedback d-block">{{ form.address.errors|striptags }}</div>
                 {% endif %}
               </div>
 
@@ -63,7 +63,7 @@
                   {{ form.address_line }}
                 </div>
                 {% if form.address_line.errors %}
-                  <div class="invalid-feedback d-block">{{ form.address_line.errors|striptags }}</div>
+                <div class="invalid-feedback d-block">{{ form.address_line.errors|striptags }}</div>
                 {% endif %}
               </div>
             </div>
@@ -78,7 +78,7 @@
                   {{ form.district }}
                 </div>
                 {% if form.district.errors %}
-                  <div class="invalid-feedback d-block">{{ form.district.errors|striptags }}</div>
+                <div class="invalid-feedback d-block">{{ form.district.errors|striptags }}</div>
                 {% endif %}
               </div>
 
@@ -90,7 +90,7 @@
                   {{ form.city }}
                 </div>
                 {% if form.city.errors %}
-                  <div class="invalid-feedback d-block">{{ form.city.errors|striptags }}</div>
+                <div class="invalid-feedback d-block">{{ form.city.errors|striptags }}</div>
                 {% endif %}
               </div>
             </div>
@@ -105,7 +105,7 @@
                   {{ form.postal_code }}
                 </div>
                 {% if form.postal_code.errors %}
-                  <div class="invalid-feedback d-block">{{ form.postal_code.errors|striptags }}</div>
+                <div class="invalid-feedback d-block">{{ form.postal_code.errors|striptags }}</div>
                 {% endif %}
               </div>
 
@@ -117,7 +117,7 @@
                   {{ form.building_number }}
                 </div>
                 {% if form.building_number.errors %}
-                  <div class="invalid-feedback d-block">{{ form.building_number.errors|striptags }}</div>
+                <div class="invalid-feedback d-block">{{ form.building_number.errors|striptags }}</div>
                 {% endif %}
               </div>
             </div>
@@ -132,7 +132,7 @@
                   {{ form.country }}
                 </div>
                 {% if form.country.errors %}
-                  <div class="invalid-feedback d-block">{{ form.country.errors|striptags }}</div>
+                <div class="invalid-feedback d-block">{{ form.country.errors|striptags }}</div>
                 {% endif %}
               </div>
 
@@ -144,7 +144,7 @@
                   {{ form.vat_number }}
                 </div>
                 {% if form.vat_number.errors %}
-                  <div class="invalid-feedback d-block">{{ form.vat_number.errors|striptags }}</div>
+                <div class="invalid-feedback d-block">{{ form.vat_number.errors|striptags }}</div>
                 {% endif %}
               </div>
             </div>
@@ -159,7 +159,7 @@
                   {{ form.cr_number }}
                 </div>
                 {% if form.cr_number.errors %}
-                  <div class="invalid-feedback d-block">{{ form.cr_number.errors|striptags }}</div>
+                <div class="invalid-feedback d-block">{{ form.cr_number.errors|striptags }}</div>
                 {% endif %}
               </div>
             </div>
@@ -171,7 +171,7 @@
               </label>
               {{ form.notes }}
               {% if form.notes.errors %}
-                <div class="invalid-feedback d-block">{{ form.notes.errors|striptags }}</div>
+              <div class="invalid-feedback d-block">{{ form.notes.errors|striptags }}</div>
               {% endif %}
             </div>
 

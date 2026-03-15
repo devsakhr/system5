@@ -251,7 +251,7 @@ def update_account_balance(sender, instance, created, **kwargs):
 class Supplier(models.Model):
     name = models.CharField(max_length=255, verbose_name="اسم المورد")
     phone = models.CharField(max_length=20, null=True, blank=True, verbose_name="رقم الهاتف")
-    email = models.EmailField(null=True, blank=True, verbose_name="البريد الإلكتروني")
+    address = models.CharField(max_length=255, null=True, blank=True, verbose_name="العنوان")
     address_line = models.CharField(max_length=255, null=True, blank=True, verbose_name="عنوان الشارع")
     city = models.CharField(max_length=100, null=True, blank=True, verbose_name="المدينة")
     postal_code = models.CharField(max_length=9, null=True, blank=True, verbose_name="الرمز البريدي")
@@ -272,7 +272,8 @@ class Supplier(models.Model):
 class Customer(models.Model):
     name = models.CharField(max_length=255, verbose_name="اسم العميل")
     phone = models.CharField(max_length=20, null=True, blank=True, verbose_name="رقم الهاتف")
-    email = models.EmailField(null=True, blank=True, verbose_name="البريد الإلكتروني")
+    address = models.CharField(max_length=255, null=True, blank=True, verbose_name="عنوان العميل")
+
     address_line = models.CharField(max_length=255, null=True, blank=True, verbose_name="عنوان الشارع")
     district = models.CharField(max_length=100, null=True, blank=True, verbose_name="عنوان الحي")
   
@@ -398,13 +399,9 @@ class Invoice(models.Model):
         blank=True,
         verbose_name="المورد"
     )
-    branch = models.ForeignKey(
-        'Branch',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        verbose_name="الفرع"
-    )
+    
+    branch = models.CharField(max_length=255, verbose_name="اسم الفرع")
+
     original_invoice = models.ForeignKey(
         'self',
         on_delete=models.SET_NULL,

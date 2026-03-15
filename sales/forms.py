@@ -29,7 +29,10 @@ class SalesInvoiceForm(forms.ModelForm):
         ]
         widgets = {
             'customer': forms.Select(attrs={'class': 'form-control'}),
-            'branch': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'اسم الفرع'
+            }),
             'invoice_type': forms.HiddenInput(),
             'return_reason': forms.HiddenInput(),
             'original_invoice': forms.HiddenInput(),
@@ -78,6 +81,7 @@ class SalesInvoiceForm(forms.ModelForm):
             'qr_code': forms.FileInput(attrs={'class': 'form-control'}),
 
             # جعل الحقل status Select
+            'branch': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'اسم الفرع'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
         }
 
@@ -85,8 +89,8 @@ class SalesInvoiceForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         # مثال: تعيين القيمة الافتراضية لحقل invoice_type إلى 'sales'
         self.fields['customer'].empty_label = "اختار عميل"
-        self.fields['branch'].empty_label = "الفرع"
-        self.fields['branch'].queryset = self.fields['branch'].queryset.filter(is_active=True)
+        # self.fields['branch'].empty_label = "الفرع"
+        # self.fields['branch'].queryset = self.fields['branch'].queryset.filter(is_active=True)
         self.fields['invoice_type'].initial = 'sales'
         self.fields['invoice_type'].required = False
         self.instance.invoice_type = 'sales'
