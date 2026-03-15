@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db import transaction
 from django.contrib import messages
-from invoices.models import Invoice, InvoiceItem, Product
+from invoices.models import Invoice, InvoiceItem, Product, Branch
 
 #from django.utils.timezone import localtime
 
@@ -17,6 +17,9 @@ from django.conf import settings
 
 
 class SalesInvoiceForm(forms.ModelForm):
+    # branch is a CharField in the model, so we don't need a ModelChoiceField here.
+    # It will use the TextInput widget defined in Meta.widgets.
+
     class Meta:
         model = Invoice
         fields = [
@@ -87,6 +90,7 @@ class SalesInvoiceForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         # مثال: تعيين القيمة الافتراضية لحقل invoice_type إلى 'sales'
         self.fields['customer'].empty_label = "اختار عميل"
         # self.fields['branch'].empty_label = "الفرع"

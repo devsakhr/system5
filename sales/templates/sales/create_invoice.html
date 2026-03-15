@@ -585,8 +585,7 @@
     // ==================================================
     // Invoice Calculation Logic
     // ==================================================
-    const productPrices = {{ product_prices| safe
-  }};
+    const productPrices = {{ product_prices| safe }};
   const productUnits = {{ product_units| safe }};
   const conversionUnits = {{ conversion_units| safe }};
   const invoiceItemsTbody = document.getElementById('invoice-items-tbody');
