@@ -563,6 +563,20 @@
 
     // --- Tom Select Initialization ---
     let tomSelectInstances = {}; // Store instances to manage them
+    const mainCustomerSelect = document.getElementById('{{ form.customer.id_for_label }}');
+
+    function initializeCustomerSelect(element) {
+      if (element && !element.tomselect) {
+        const instanceId = element.id || element.name;
+        tomSelectInstances[instanceId] = new TomSelect(element, {
+          create: false,
+          sortField: { field: "text", direction: "asc" },
+          searchField: ["text"],
+          allowEmptyOption: true,
+          placeholder: "ابحث أو اختر عميل...",
+        });
+      }
+    }
 
     function initializeProductSelect(element) {
       if (element && !element.tomselect) { // Check if not already initialized
@@ -576,6 +590,7 @@
     }
 
     // Initialize for existing product selects on page load
+    initializeCustomerSelect(mainCustomerSelect);
     document.querySelectorAll('#invoice-items-tbody select[name$="-product"]').forEach(selectElement => {
       initializeProductSelect(selectElement);
     });
@@ -784,7 +799,6 @@
   // ==================================================
   const customerForm = document.getElementById('customerForm');
   const customerModalElement = document.getElementById('customerModal'); // عنصر الـ Modal نفسه
-  const mainCustomerSelect = document.getElementById('{{ form.customer.id_for_label }}');
 
   if (customerForm && customerModalElement && mainCustomerSelect) {
     customerForm.addEventListener('submit', function (e) {
@@ -803,10 +817,35 @@
         .then(data => {
           if (data.success) {
             // إضافة العميل الجديد إلى القائمة المنسدلة الرئيسية
-            // new Option(text, value, defaultSelected, selected)
-            const newOption = new Option(data.customer_name, data.customer_id, true, true);
-            mainCustomerSelect.appendChild(newOption);
-            // mainCustomerSelect.value = data.customer_id; // سيتم تحديده تلقائيًا لأن selected=true في Option
+            const customerId = String(data.customer_id);
+            const existingOption = mainCustomerSelect.querySelector(`option[value="${customerId}"]`);
+
+            if (mainCustomerSelect.tomselect) {
+              const customerSelect = mainCustomerSelect.tomselect;
+              if (existingOption) {
+                existingOption.text = data.customer_name;
+                customerSelect.updateOption(customerId, {
+                  value: customerId,
+                  text: data.customer_name
+                });
+              } else {
+                customerSelect.addOption({
+                  value: customerId,
+                  text: data.customer_name
+                });
+              }
+              customerSelect.refreshOptions(false);
+              customerSelect.setValue(customerId);
+            } else {
+              if (existingOption) {
+                existingOption.text = data.customer_name;
+                existingOption.selected = true;
+              } else {
+                const newOption = new Option(data.customer_name, customerId, true, true);
+                mainCustomerSelect.appendChild(newOption);
+              }
+              mainCustomerSelect.value = customerId;
+            }
 
             // الحصول على نسخة الـ modal من Bootstrap
             const modalInstance = bootstrap.Modal.getInstance(customerModalElement);
